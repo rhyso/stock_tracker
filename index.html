@@ -1,0 +1,50 @@
+
+    <!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+const endpoint = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=PTON&interval=5min&apikey=4N776PDC7C1ED6AW"
+
+const getData2 = () => {
+    fetch(endpoint)
+    .then(response => console.log(response))
+    .then(response => {
+        console.log(response)
+    })
+}
+
+const reducer = (accumulator, currentValue) =>  {
+    let total = accumulator + currentValue;
+    return total/accumulator.length
+}
+
+const getData = async () => {
+    let response = await fetch (endpoint)
+    let data = await response.json()
+    return data
+}
+getData().then(data => {
+    for (const [key, value] of Object.entries(data)) {
+    //   console.log(`${key}: ${value.close}`);
+    //   console.log(value)
+        for (var key2 in value) {
+            
+            if (value.hasOwnProperty(key2)) {
+                
+                let item = value[key2]
+
+                console.log( item, key2)
+    
+            }
+        }
+    }
+}) 
+//console.log(data["Time Series (5min)"].close))
+</script>
+</head>   
+
+<body>
+ddds
+</body>
+</html>
