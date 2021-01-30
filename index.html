@@ -4,7 +4,7 @@
     <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script>
-    const endpoint = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=PTON&interval=5min&apikey=4N776PDC7C1ED6AW"
+    const endpoint = (ticker) => `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=4N776PDC7C1ED6AW`
     
     const getData2 = () => {
         fetch(endpoint)
@@ -15,12 +15,13 @@
     }
     
     const reducer = (accumulator, currentValue) =>  {
-        let total = accumulator + currentValue;
-        return total/accumulator.length
+        let total = (+accumulator + +currentValue);
+        console.log(typeof +total)
+        return +total
     }
     
-    const getData = async () => {
-        let response = await fetch (endpoint)
+    const getData = async (ticker) => {
+        let response = await fetch (endpoint(ticker))
         let data = await response.json()
         return data
     }
@@ -30,8 +31,18 @@
     let low = "3. low";
     let close = "4. close";
     let volume = "5. volume";
+
+    let ticker = "PTON";
+
+let tickerList = ["PTON", "IBM"]
+    let timeDelay = 60000 //1 minute
     
-    getData().then(data => {
+    tickerList.forEach(tickerItem => {
+        
+  
+    window.setInterval(() => {
+
+    getData(tickerItem).then(data => {
         for (const [key, value] of Object.entries(data)) {
         //   console.log(`${key}: ${value.close}`);
         //   console.log(value)
@@ -41,26 +52,33 @@
                     
                     let item = value[key2]
     
+                    console.log(tickerItem)
                     console.log( item["4. close"], key2)
                     console.log('High', item[high])
                     console.log('Low', item[low])
     
                     console.log('Close', item[close])
     
-                    console.log('Volume', item[volume])
+                    console.log('Open', item[open])
     
                     console.log("keys", Object.keys(item))
-        
+
+                    const arrayOfValues = [item[high], item[low], item[close], item[open]]
+                    const average = arrayOfValues.reduce(reducer)/arrayOfValues.length
+                    console.log('arr', arrayOfValues)
+                    console.log("Average price", ticker, " ", average)
                 }
             }
         }
     }) 
+}, timeDelay);
+});
     //console.log(data["Time Series (5min)"].close))
     </script>
     </head>   
     
     <body>
-    ddds
+    dddsd
     </body>
     </html>
     
