@@ -34,46 +34,35 @@
 
     let ticker = "PTON";
 
-let tickerList = ["PTON", "IBM"]
-    let timeDelay = 60000 //1 minute
+    let tickerList = ["PTON", "IBM"]
+    let timeDelay = 50000 //1 minute
+    let arrayOfValues;
+    let average;
     
-    tickerList.forEach(tickerItem => {
         
-  
-    window.setInterval(() => {
-
-    getData(tickerItem).then(data => {
-        for (const [key, value] of Object.entries(data)) {
-        //   console.log(`${key}: ${value.close}`);
-        //   console.log(value)
-            for (var key2 in value) {
+    // window.setInterval(() => {
+        tickerList.forEach(tickerItem => {
+            getData(tickerItem).then(data => {
+                for (const [key, value] of Object.entries(data)) {
                 
-                if (value.hasOwnProperty(key2)) {
-                    
-                    let item = value[key2]
-    
-                    console.log(tickerItem)
-                    console.log( item["4. close"], key2)
-                    console.log('High', item[high])
-                    console.log('Low', item[low])
-    
-                    console.log('Close', item[close])
-    
-                    console.log('Open', item[open])
-    
-                    console.log("keys", Object.keys(item))
+                    for (var key2 in value) {
+                        
+                        var keys = Object.keys(value);
+                        var last = keys[keys.length - 1];
+                        console.log('yep',value)
 
-                    const arrayOfValues = [item[high], item[low], item[close], item[open]]
-                    const average = arrayOfValues.reduce(reducer)/arrayOfValues.length
-                    console.log('arr', arrayOfValues)
-                    console.log("Average price", ticker, " ", average)
+                        if (value.hasOwnProperty(key2)) {
+                            
+                            let item = value[key2]
+                            arrayOfValues = [item[high], item[low], item[close], item[open]]
+                            average = arrayOfValues.reduce(reducer)/arrayOfValues.length
+                            console.log("Average price", ticker, " ", average)
+                        }
+                    }
                 }
-            }
-        }
-    }) 
-}, timeDelay);
+            }) 
+// }, timeDelay);
 });
-    //console.log(data["Time Series (5min)"].close))
     </script>
     </head>   
     
